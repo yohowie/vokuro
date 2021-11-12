@@ -1,0 +1,19 @@
+{
+	"name" : "yohowie/vokuro",
+	"description" : "使用phalcon4默认目录结构创建vokuro项目",
+	"homepage" : "http://www.howie.cc",
+	"keywords" : [
+		"phalcon",
+		"framework",
+		"sample app",
+		"vokuro"
+	],
+	"require-dev" : {
+		"phalcon/ide-stubs" : "~4.1"
+	},
+	"autoload": {
+		"psr-4": {
+			"Vokuro\\": "app/"
+		}
+	}
+}
