@@ -10,6 +10,7 @@ use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Session\Adapter\Stream as SessionAdapter;
 use Phalcon\Session\Manager as SessionManager;
 use Phalcon\Url as UrlResolver;
+use Phalcon\Mvc\Dispatcher;
 
 /**
  * Shared configuration service
@@ -119,4 +120,15 @@ $di->setShared('session', function () {
     $session->start();
 
     return $session;
+});
+
+/**
+ * 设置默认命名空间
+ */
+$di->set('dispatcher', function () {
+    $dispatcher = new Dispatcher();
+    
+    $dispatcher->setDefaultNamespace('Vokuro\Controllers');
+    
+    return $dispatcher;
 });
