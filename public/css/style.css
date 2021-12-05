@@ -1,0 +1,9 @@
+@charset "UTF-8";
+footer {
+    background: url("../img/feature-gradient.png") no-repeat scroll center 100% white;
+    color: #B7B7B7;
+    font-size: 12px;
+}
+footer a {
+    margin: 0 10px;
+}

@@ -1,8 +1,10 @@
 <?php
 declare(strict_types=1);
 
+use Phalcon\Assets\Manager;
 use Phalcon\Escaper;
 use Phalcon\Flash\Direct as Flash;
+use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
@@ -10,7 +12,6 @@ use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Session\Adapter\Stream as SessionAdapter;
 use Phalcon\Session\Manager as SessionManager;
 use Phalcon\Url as UrlResolver;
-use Phalcon\Mvc\Dispatcher;
 
 /**
  * Shared configuration service
@@ -131,4 +132,29 @@ $di->set('dispatcher', function () {
     $dispatcher->setDefaultNamespace('Vokuro\Controllers');
     
     return $dispatcher;
+});
+
+$di->setShared('assets', function() {
+    $version = '1.0.0';
+
+    $assetManager = new Manager();
+
+    $assetManager->collection('css')
+        ->addCss('/bootstrap/css/bootstrap.min.css?dc='. $version, true, false, [
+            'media'     => 'screen,projection',
+            'integrity' => 'sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3'
+        ])
+        ->addCss('/css/style.css?dc='. $version, true, true, [
+            'media' => 'screen,projection'
+        ]);
+
+    $assetManager->collection('js')
+        ->addJs('/js/jquery-3.6.0.min.js?dc='. $version, true, true, [
+            'integrity' => 'sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK'
+        ])
+        ->addJs('/bootstrap/js/bootstrap.min.js?dc='. $version, true, false, [
+            'integrity' => 'sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13'
+        ]);
+
+    return $assetManager;
 });
