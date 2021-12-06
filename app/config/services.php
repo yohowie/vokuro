@@ -134,6 +134,9 @@ $di->set('dispatcher', function () {
     return $dispatcher;
 });
 
+/**
+ * 加载静态资源
+ */
 $di->setShared('assets', function() {
     $version = '1.0.0';
 

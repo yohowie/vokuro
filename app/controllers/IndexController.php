@@ -6,7 +6,12 @@ namespace Vokuro\Controllers;
 class IndexController extends ControllerBase
 {
 
-    public function indexAction()
+    /**
+     * 首页
+     *
+     * @return void
+     */
+    public function indexAction(): void
     {
         $this->view->setTemplateBefore('public');
     }
