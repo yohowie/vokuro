@@ -10,47 +10,47 @@ class Users extends Model
     /**
      * @var integer
      */
-    public int $id;
+    public $id;
 
     /**
      * @var string
      */
-    public string $name;
+    public $name;
 
     /**
      * @var string
      */
-    public string $email;
+    public $email;
 
     /**
      * @var string
      */
-    public string $password;
+    public $password;
 
     /**
      * @var string
      */
-    public string $must_change_password;
+    public $must_change_password;
 
     /**
      * @var string
      */
-    public string $profiles_id;
+    public $profiles_id;
 
     /**
      * @var string
      */
-    public string $banned;
+    public $banned;
 
     /**
      * @var string
      */
-    public string $suspended;
+    public $suspended;
 
     /**
      * @var string
      */
-    public string $active;
+    public $active;
 
     /**
      * 在创建用户之前分配密码
