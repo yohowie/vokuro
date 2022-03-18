@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use Phalcon\Assets\Manager;
+use Phalcon\Crypt;
 use Phalcon\Escaper;
 use Phalcon\Flash\Direct as Flash;
 use Phalcon\Mvc\Dispatcher;
@@ -12,6 +13,7 @@ use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Session\Adapter\Stream as SessionAdapter;
 use Phalcon\Session\Manager as SessionManager;
 use Phalcon\Url as UrlResolver;
+use Vokuro\Plugins\Auth\Auth;
 
 /**
  * Shared configuration service
@@ -160,4 +162,20 @@ $di->setShared('assets', function() {
         ]);
 
     return $assetManager;
+});
+
+/**
+ * 注册用户验证组件
+ */
+$di->setShared('auth', Auth::class);
+
+/**
+ * 加密/解密
+ */
+$di->set('crypt', function() use($di) {
+    $cryptSalt = $di->getShared('config')->path('application.cryptSalt');
+    $crypt = new Crypt();
+    $crypt->setKey($cryptSalt);
+    
+    return $crypt;
 });

@@ -28,5 +28,6 @@ return new \Phalcon\Config([
         'formsDir'       => APP_PATH . '/forms',
         'cacheDir'       => BASE_PATH . '/cache/',
         'baseUri'        => '/',
+        'cryptSalt'      => $_ENV['APP_CRYPT_SALT'] ?? 'Phalcon'
     ]
 ]);

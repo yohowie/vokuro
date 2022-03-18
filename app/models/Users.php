@@ -51,6 +51,17 @@ class Users extends Model
      * @var string
      */
     public $active;
+    
+    /**
+     * initialize
+     */
+    public function initialize()
+    {
+        $this->hasOne('profiles_id', Profiles::class, 'id', [
+            'alias' => 'profile',
+            'reusable' => true
+        ]);
+    }
 
     /**
      * 在创建用户之前分配密码
