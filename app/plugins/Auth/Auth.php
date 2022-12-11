@@ -212,4 +212,25 @@ class Auth extends Injectable
 
         return $identity['name'];
     }
+
+    /**
+     * 通过他/她的 id 授权用户
+     * 
+     * @param int $id
+     */
+    public function authUserById($id)
+    {
+        $user = Users::findFirstById($id);
+        if ($user == false) {
+            throw new Exception('用户不存在');
+        }
+
+        $this->checkUserFlags($user);
+
+        $this->session->set('auth-identity', [
+            'id' => $user->id,
+            'name' => $user->name,
+            'profile' => $user->profile->name
+        ]);
+    }
 }

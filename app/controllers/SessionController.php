@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace Vokuro\Controllers;
 
+use Vokuro\Forms\ForgotPasswordForm;
 use Vokuro\Forms\LoginForm;
 use Vokuro\Forms\SignUpForm;
+use Vokuro\Models\ResetPasswords;
 use Vokuro\Models\Users;
 use Vokuro\Plugins\Auth\Exception as AuthException;
 
@@ -86,6 +88,41 @@ class SessionController extends ControllerBase
             }
         } catch (AuthException $e) {
             $this->flash->error($e->getMessage());
+        }
+
+        $this->view->setVar('form', $form);
+    }
+
+    public function forgotPasswordAction(): void
+    {
+        $form = new ForgotPasswordForm();
+
+        if ($this->request->isPost()) {
+            // 仅发送电子邮件是配置值设置为 true
+            if ($this->getDI()->get('config')->useMail) {
+                if ($form->isValid($this->request->getPost()) == false) {
+                    foreach ($form->getMessages() as $message) {
+                        $this->flash->error((string) $message);
+                    }
+                } else {
+                    $user = Users::findFirstByEmail($this->request->getPost('email'));
+                    if (!$user) {
+                        $this->flash->success('没有与此电子邮件关联的帐户');
+                    } else {
+                        $resetPassword = new ResetPasswords();
+                        $resetPassword->users_id = $user->id;
+                        if ($resetPassword->save()) {
+                            $this->flash->success('成功！ 请检查您的邮件以获取重置密码的电子邮件');
+                        } else {
+                            foreach ($resetPassword->getMessages() as $message) {
+                                $this->flash->error((string) $message);
+                            }
+                        }
+                    }
+                }
+            } else {
+                $this->flash->warning('电子邮件目前已禁用。 将配置键“useMail”更改为 true 以启用电子邮件。');
+            }
         }
 
         $this->view->setVar('form', $form);

@@ -14,6 +14,7 @@ use Phalcon\Session\Adapter\Stream as SessionAdapter;
 use Phalcon\Session\Manager as SessionManager;
 use Phalcon\Url as UrlResolver;
 use Vokuro\Plugins\Auth\Auth;
+use Vokuro\Plugins\Mail\Mail;
 
 /**
  * Shared configuration service
@@ -168,6 +169,8 @@ $di->setShared('assets', function() {
  * 注册用户验证组件
  */
 $di->setShared('auth', Auth::class);
+
+$di->setShared('mail', Mail::class);
 
 /**
  * 加密/解密

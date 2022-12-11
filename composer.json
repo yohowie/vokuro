@@ -13,7 +13,8 @@
 		"ext-phalcon" : "^4.1.2",
 		"twbs/bootstrap": "^5.1",
 		"robmorgan/phinx": "^0.12.9",
-		"vlucas/phpdotenv": "^5.4"
+		"vlucas/phpdotenv": "^5.4",
+		"swiftmailer/swiftmailer": "^6.3"
 	},
 	"require-dev": {
 		"phalcon/ide-stubs": "~4.1"

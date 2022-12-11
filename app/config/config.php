@@ -28,6 +28,19 @@ return new \Phalcon\Config([
         'formsDir'       => APP_PATH . '/forms',
         'cacheDir'       => BASE_PATH . '/cache/',
         'baseUri'        => '/',
-        'cryptSalt'      => $_ENV['APP_CRYPT_SALT'] ?? 'Phalcon'
-    ]
+        'cryptSalt'      => $_ENV['APP_CRYPT_SALT'] ?? 'Phalcon',
+        'publicUrl'      => $_ENV['APP_PUBLIC_URL']
+    ],
+    'mail' => [
+        'fromName' => $_ENV['MAIL_FROM_NAME'] ?? 'Vokuro',
+        'fromEmail' => $_ENV['MAIL_FROM_EMAIL'],
+        'smtp' => [
+            'server' => $_ENV['MAIL_SMTP_SERVER'],
+            'port' => $_ENV['MAIL_SMTP_PORT'] ?? '587',
+            'security' => $_ENV['MAIL_SMTP_SECURITY'] ?? 'tls',
+            'username' => $_ENV['MAIL_SMTP_USERNAME'],
+            'password' => $_ENV['MAIL_SMTP_PASSWORD']
+        ]
+    ],
+    'useMail' => true
 ]);
