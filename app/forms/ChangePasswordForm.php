@@ -15,6 +15,7 @@ class ChangePasswordForm extends Form
     {
         // 密码
         $password = new Password('password');
+        $password->setLabel('密码');
         $password->addValidators([
             new PresenceOf([
                 'message' => '密码为必填项'
@@ -33,6 +34,7 @@ class ChangePasswordForm extends Form
 
         // 确认密码
         $confirmPassword = new Password('confirmPassword');
+        $confirmPassword->setLabel('确认密码');
         $confirmPassword->addValidators([
             new PresenceOf([
                 'message' => '确认密码为必填项'

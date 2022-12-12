@@ -233,4 +233,24 @@ class Auth extends Injectable
             'profile' => $user->profile->name
         ]);
     }
+
+    /**
+     * 获取活动身份中与用户相关的实体
+     * 
+     * @return Users
+     */
+    public function getUser()
+    {
+        $identity = $this->session->get('auth-identity');
+        if (!isset($identity['id'])) {
+            throw new Exception('会话中断，尝试重新登录。');
+        }
+
+        $user = Users::findFirstById($identity['id']);
+        if ($user == false) {
+            throw new Exception('用户不存在');
+        }
+
+        return $user;
+    }
 }
