@@ -57,13 +57,13 @@ class SessionController extends ControllerBase
 
     /**
      * 用户登录
-     * 
+     *
      * @return unknown|\Phalcon\Http\ResponseInterface
      */
     public function loginAction()
     {
         $form = new LoginForm();
-        
+
         try {
             if (!$this->request->isPost()) {
                 // 如果是get请求判断当前用户是否被记忆
@@ -82,7 +82,7 @@ class SessionController extends ControllerBase
                         'password' => $this->request->getPost('password'),
                         'remember' => $this->request->getPost('remember')
                     ]);
-                    
+
                     return $this->response->redirect('users');
                 }
             }
@@ -126,5 +126,12 @@ class SessionController extends ControllerBase
         }
 
         $this->view->setVar('form', $form);
+    }
+
+    public function logoutAction()
+    {
+        $this->auth->remove();
+
+        return $this->response->redirect('index');
     }
 }

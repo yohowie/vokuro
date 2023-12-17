@@ -213,9 +213,15 @@ class Auth extends Injectable
         return $identity['name'];
     }
 
+    public function getName()
+    {
+        $identity = $this->session->get('auth-identity');
+        return $identity['name'];
+    }
+
     /**
      * 通过他/她的 id 授权用户
-     * 
+     *
      * @param int $id
      */
     public function authUserById($id)
@@ -236,7 +242,7 @@ class Auth extends Injectable
 
     /**
      * 获取活动身份中与用户相关的实体
-     * 
+     *
      * @return Users
      */
     public function getUser()

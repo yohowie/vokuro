@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vokuro\Controllers;
 
 use Vokuro\Forms\ChangePasswordForm;
+use Vokuro\Forms\UsersForm;
 use Vokuro\Models\PasswordChanges;
 
 class UsersController extends ControllerBase
@@ -15,12 +16,12 @@ class UsersController extends ControllerBase
      */
     public function initialize(): void
     {
-        $this->view->setTemplateBefore('public');
+        $this->view->setTemplateBefore('private');
     }
 
     public function indexAction(): void
     {
-        
+        $this->view->setVar('form', new UsersForm());
     }
 
     public function changePasswordAction()

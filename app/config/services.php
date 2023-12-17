@@ -131,9 +131,9 @@ $di->setShared('session', function () {
  */
 $di->set('dispatcher', function () {
     $dispatcher = new Dispatcher();
-    
+
     $dispatcher->setDefaultNamespace('Vokuro\Controllers');
-    
+
     return $dispatcher;
 });
 
@@ -147,20 +147,15 @@ $di->setShared('assets', function() {
 
     $assetManager->collection('css')
         ->addCss('/bootstrap/css/bootstrap.min.css?dc='. $version, true, false, [
-            'media'     => 'screen,projection',
-            'integrity' => 'sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3'
+            'media' => 'screen,projection',
         ])
         ->addCss('/css/style.css?dc='. $version, true, true, [
             'media' => 'screen,projection'
         ]);
 
     $assetManager->collection('js')
-        ->addJs('/js/jquery-3.6.0.min.js?dc='. $version, true, true, [
-            'integrity' => 'sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK'
-        ])
-        ->addJs('/bootstrap/js/bootstrap.min.js?dc='. $version, true, false, [
-            'integrity' => 'sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13'
-        ]);
+        ->addJs('/js/jquery-3.6.0.min.js?dc='. $version, true, true)
+        ->addJs('/bootstrap/js/bootstrap.min.js?dc='. $version, true, false);
 
     return $assetManager;
 });
@@ -179,6 +174,6 @@ $di->set('crypt', function() use($di) {
     $cryptSalt = $di->getShared('config')->path('application.cryptSalt');
     $crypt = new Crypt();
     $crypt->setKey($cryptSalt);
-    
+
     return $crypt;
 });
