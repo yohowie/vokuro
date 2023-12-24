@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace Vokuro\Controllers;
 
+use Phalcon\Mvc\Model\Criteria;
+use Phalcon\Paginator\Adapter\QueryBuilder as Paginator;
 use Vokuro\Forms\ChangePasswordForm;
 use Vokuro\Forms\UsersForm;
 use Vokuro\Models\PasswordChanges;
+use Vokuro\Models\Users;
 
 class UsersController extends ControllerBase
 {
@@ -22,6 +25,33 @@ class UsersController extends ControllerBase
     public function indexAction(): void
     {
         $this->view->setVar('form', new UsersForm());
+        $this->assets->collection('js')->addJs('/js/privateUsers.js', true, true);
+    }
+
+    /**
+     * 搜索用户
+     */
+    public function searchAction(): void
+    {
+        $builder = Criteria::fromInput($this->getDI(), Users::class, $this->request->getQuery());
+
+        $count = Users::count($builder->getParams());
+        if ($count === 0) {
+            $this->flash->notice('没有找到任何用户');
+            $this->dispatcher->forward([
+                'action' => 'index'
+            ]);
+
+            return ;
+        }
+
+        $paginator = new Paginator([
+            'builder' => $builder->createBuilder(),
+            'limit' => 10,
+            'page' => $this->request->getQuery('page', 'int', 1),
+        ]);
+
+        $this->view->setVar('page', $paginator->paginate());
     }
 
     public function changePasswordAction()
