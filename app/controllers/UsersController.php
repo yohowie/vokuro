@@ -54,6 +54,38 @@ class UsersController extends ControllerBase
         $this->view->setVar('page', $paginator->paginate());
     }
 
+    /**
+     * 创建用户
+     */
+    public function createAction(): void
+    {
+        $form = new UsersForm();
+
+        if ($this->request->isPost()) {
+            if (!$form->isValid($this->request->getPost())) {
+                foreach ($form->getMessages() as $message) {
+                    $this->flash->error((string) $message);
+                }
+            } else {
+                $user = new Users([
+                    'name' => $this->request->getPost('name', 'striptags'),
+                    'profiles_id' => $this->request->getPost('profilesId', 'int'),
+                    'email' => $this->request->getPost('email', 'email'),
+                ]);
+
+                if (!$user->save()) {
+                    foreach ($user->getMessages() as $message) {
+                        $this->flash->error((string) $message);
+                    }
+                } else {
+                    $this->flash->success('用户创建成功');
+                }
+            }
+        }
+
+        $this->view->setVar('form', $form);
+    }
+
     public function changePasswordAction()
     {
         $form = new ChangePasswordForm();

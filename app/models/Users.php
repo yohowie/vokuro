@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Vokuro\Models;
 
 use Phalcon\Mvc\Model;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\Uniqueness;
 
 class Users extends Model
 {
@@ -51,7 +53,7 @@ class Users extends Model
      * @var string
      */
     public $active;
-    
+
     /**
      * initialize
      */
@@ -70,10 +72,35 @@ class Users extends Model
      */
     public function beforeValidationOnCreate(): void
     {
-        $this->must_change_password = 'N';
+        if (empty($this->password)) {
+            $tempPassword = preg_replace('/[^a-zA-Z0-9]/', '', base64_encode(openssl_random_pseudo_bytes(12)));
+            $this->must_change_password = 'Y';
+
+            $security = $this->getDI()->getShared('security');
+            $this->password = $security->hash($tempPassword);
+        } else {
+            $this->must_change_password = 'N';
+        }
+
+        if ($this->getDI()->get('config')->useMail) {
+            $this->active = 'N';
+        } else {
+            $this->active = 'Y';
+        }
 
         $this->suspended = 'N';
 
         $this->banned =  'N';
+    }
+
+    public function validation()
+    {
+        $validator = new Validation();
+
+        $validator->add('email', new Uniqueness([
+            'message' => '该邮箱已被注册',
+        ]));
+
+        return $this->validate($validator);
     }
 }
