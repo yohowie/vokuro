@@ -11,6 +11,7 @@ use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Session\Adapter\Stream as SessionAdapter;
+use Phalcon\Session\Bag;
 use Phalcon\Session\Manager as SessionManager;
 use Phalcon\Url as UrlResolver;
 use Vokuro\Plugins\Auth\Auth;
@@ -176,4 +177,8 @@ $di->set('crypt', function() use($di) {
     $crypt->setKey($cryptSalt);
 
     return $crypt;
+});
+
+$di->set('sessionBag', function() {
+    return new Bag('conditions');
 });
