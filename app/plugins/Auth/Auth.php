@@ -209,14 +209,29 @@ class Auth extends Injectable
     public function getIdentity(): string
     {
         $identity = $this->session->get('auth-identity');
-
-        return $identity['name'];
     }
 
     public function getName()
     {
         $identity = $this->session->get('auth-identity');
         return $identity['name'];
+    }
+
+    public function remove()
+    {
+        if ($this->cookies->has('RMU')) {
+            $this->cookies->get('RMU')->delete();
+        }
+        if ($this->cookies->has('RMT')) {
+            $token = $this->cookies->get('RMT')->getValue();
+            $userId = $this->findFirstByToken($token);
+            if ($userId) {
+                $this->deleteToken($userId);
+            }
+            $this->cookies->get('RMT')->delete();
+        }
+
+        $this->session->remove('auth-identity');
     }
 
     /**
@@ -258,5 +273,31 @@ class Auth extends Injectable
         }
 
         return $user;
+    }
+
+    public function findFirstByToken($token)
+    {
+        $userToken = RememberTokens::findFirst([
+            'conditions' => 'token = :token:',
+            'bind' => [
+                'token' => $token
+            ]
+            ]);
+
+            return $userToken ? $userToken->usersId : null;
+    }
+
+    public function deleteToken(int $userId): void
+    {
+        $user = RememberTokens::find([
+            'conditions' => 'usersId = :userId:',
+            'bind' => [
+                'userId' => $userId
+            ]
+        ]);
+
+        if ($user) {
+            $user->delete();
+        }
     }
 }

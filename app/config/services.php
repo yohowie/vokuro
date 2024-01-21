@@ -5,15 +5,19 @@ use Phalcon\Assets\Manager;
 use Phalcon\Crypt;
 use Phalcon\Escaper;
 use Phalcon\Flash\Direct as Flash;
+use Phalcon\Logger\Adapter\Stream as FileLogger;
+use Phalcon\Logger\Formatter\Line as FormatterLine;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
+use Phalcon\Security;
 use Phalcon\Session\Adapter\Stream as SessionAdapter;
 use Phalcon\Session\Bag;
 use Phalcon\Session\Manager as SessionManager;
 use Phalcon\Url as UrlResolver;
+use Vokuro\Plugins\Acl\Acl;
 use Vokuro\Plugins\Auth\Auth;
 use Vokuro\Plugins\Mail\Mail;
 
@@ -161,6 +165,22 @@ $di->setShared('assets', function() {
     return $assetManager;
 });
 
+$di->setShared('acl', function() {
+    $filename = APP_PATH .'/config/acl.php';
+    $privateResources = [];
+    if (is_readable($filename)) {
+        $privateResources = include $filename;
+        if (!empty($privateResources['private'])) {
+            $privateResources = $privateResources['private'];
+        }
+    }
+
+    $acl = new Acl();
+    $acl->addPrivateResources($privateResources);
+
+    return $acl;
+});
+
 /**
  * 注册用户验证组件
  */
@@ -181,4 +201,23 @@ $di->set('crypt', function() use($di) {
 
 $di->set('sessionBag', function() {
     return new Bag('conditions');
+});
+
+$di->set('logger', function() {
+    $loggerConfigs = $this->getConfig()->logger;
+    $filename = trim($loggerConfigs->filename, '\\/');
+    $path = rtrim($loggerConfigs->path, '\\/') . DIRECTORY_SEPARATOR;
+
+    $formatter = new FormatterLine($loggerConfigs->format, $loggerConfigs->date);
+    $logger = new FileLogger($path . $filename);
+    $logger->setFormatter($formatter);
+
+    return $logger;
+});
+
+$di->set('security', function() use($di) {
+    $security = new Security();
+    $security->setDI($di);
+
+    return $security;
 });

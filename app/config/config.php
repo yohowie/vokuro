@@ -4,6 +4,9 @@
  * Modified: prepend directory path of current file, because of this file own different ENV under between Apache and command line.
  * NOTE: please remove this comment.
  */
+
+use Phalcon\Logger;
+
 defined('BASE_PATH') || define('BASE_PATH', getenv('BASE_PATH') ?: realpath(dirname(__FILE__) . '/../..'));
 defined('APP_PATH') || define('APP_PATH', BASE_PATH . '/app');
 
@@ -26,7 +29,7 @@ return new \Phalcon\Config([
         'pluginsDir'     => APP_PATH . '/plugins/',
         'libraryDir'     => APP_PATH . '/library/',
         'formsDir'       => APP_PATH . '/forms',
-        'cacheDir'       => BASE_PATH . '/cache/',
+        'cacheDir'       => BASE_PATH . '/var/cache/',
         'baseUri'        => '/',
         'cryptSalt'      => $_ENV['APP_CRYPT_SALT'] ?? 'Phalcon',
         'publicUrl'      => $_ENV['APP_PUBLIC_URL']
@@ -41,6 +44,13 @@ return new \Phalcon\Config([
             'username' => $_ENV['MAIL_SMTP_USERNAME'],
             'password' => $_ENV['MAIL_SMTP_PASSWORD']
         ]
+    ],
+    'logger' => [
+        'path' => APP_PATH .'/var/logs/',
+        'format' => '%date% [%type%] %message%',
+        'date' => 'D j H:i:s',
+        'logLevel' => Logger::DEBUG,
+        'filename' => 'application.log'
     ],
     'useMail' => true
 ]);
