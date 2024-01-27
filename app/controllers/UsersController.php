@@ -86,6 +86,73 @@ class UsersController extends ControllerBase
         $this->view->setVar('form', $form);
     }
 
+    public function editAction($id)
+    {
+        $user = Users::findFirstById($id);
+        if (!$user) {
+            $this->flash->error('User was not found.');
+            return $this->dispatcher->forward([
+                'action' => 'index'
+            ]);
+        }
+
+        $form = new UsersForm($user, [
+            'edit' => true
+        ]);
+
+        if ($this->request->isPost()) {
+            $user->assign([
+                'name' => $this->request->getPost('name', 'striptags'),
+                'profilesId' => $this->request->getPost('prodilesId', 'int'),
+                'email' => $this->request->getPost('email', 'email'),
+                'banned' => $this->request->getPost('banned'),
+                'suspended' => $this->request->getPost('suspended'),
+                'active' => $this->request->getPost('avtive')
+            ]);
+
+            if (!$form->isValid($this->request->getPost())) {
+                foreach ($form->getMessages() as $message) {
+                    $this->flash->error((string) $message);
+                }
+            } else {
+                if (!$user->save()) {
+                    foreach ($user->getMessages() as $message) {
+                        $this->flash->error((string) $message);
+                    }
+                } else {
+                    $this->flash->success('User was updated successfully.');
+                }
+            }
+        }
+        $this->view->setVars([
+            'user' => $user,
+            'form' => $form,
+        ]);
+    }
+
+    public function deleteAction($id)
+    {
+        $user = Users::findFirstById($id);
+        if (!$user) {
+            $this->flash->error('User was not found.');
+            return $this->dispatcher->forward([
+                'action' => 'index'
+            ]);
+        }
+
+        if (!$user->delete()) {
+            foreach ($user->getMessages() as $message) {
+                $this->flash->error((string) $message);
+            }
+        } else {
+            $this->flash->success('User was deleted.');
+        }
+
+        return $this->dispatcher->forward([
+            'action' => 'index',
+        ]);
+    }
+
     public function changePasswordAction()
     {
         $form = new ChangePasswordForm();

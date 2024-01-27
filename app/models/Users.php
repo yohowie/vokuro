@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Vokuro\Models;
 
 use Phalcon\Mvc\Model;
+use Phalcon\Security;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\Uniqueness;
 
@@ -63,6 +64,27 @@ class Users extends Model
             'alias' => 'profile',
             'reusable' => true
         ]);
+
+        $this->hasMany('id', SuccessLogins::class, 'usersId', [
+            'alias'      => 'successLogins',
+            'foreignKey' => [
+                'message' => 'User cannot be deleted because he/she has activity in the system',
+            ],
+        ]);
+
+        $this->hasMany('id', PasswordChanges::class, 'usersId', [
+            'alias'      => 'passwordChanges',
+            'foreignKey' => [
+                'message' => 'User cannot be deleted because he/she has activity in the system',
+            ],
+        ]);
+
+        $this->hasMany('id', ResetPasswords::class, 'usersId', [
+            'alias'      => 'resetPasswords',
+            'foreignKey' => [
+                'message' => 'User cannot be deleted because he/she has activity in the system',
+            ],
+        ]);
     }
 
     /**
@@ -91,6 +113,21 @@ class Users extends Model
         $this->suspended = 'N';
 
         $this->banned =  'N';
+    }
+
+    public function afterCreate()
+    {
+        // Only send the confirmation email if emails are turned on in the config
+        if ($this->getDI()->get('config')->useMail && $this->active == 'N') {
+            $emailConfirmation          = new EmailConfirmations();
+            $emailConfirmation->usersId = $this->id;
+
+            if ($emailConfirmation->save()) {
+                $this->getDI()
+                    ->getFlash()
+                    ->notice('A confirmation mail has been sent to ' . $this->email);
+            }
+        }
     }
 
     public function validation()
