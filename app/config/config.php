@@ -5,12 +5,13 @@
  * NOTE: please remove this comment.
  */
 
+use Phalcon\Config\Config;
 use Phalcon\Logger;
 
 defined('BASE_PATH') || define('BASE_PATH', getenv('BASE_PATH') ?: realpath(dirname(__FILE__) . '/../..'));
 defined('APP_PATH') || define('APP_PATH', BASE_PATH . '/app');
 
-return new \Phalcon\Config([
+return new \Phalcon\Config\Config([
     'database' => [
         'adapter'     => $_ENV['DB_ADAPTER'] ?? 'Mysql',
         'host'        => $_ENV['DB_HOST'] ?? 'localhost',
@@ -45,12 +46,13 @@ return new \Phalcon\Config([
             'password' => $_ENV['MAIL_SMTP_PASSWORD']
         ]
     ],
-    'logger' => [
-        'path' => APP_PATH .'/var/logs/',
-        'format' => '%date% [%type%] %message%',
-        'date' => 'D j H:i:s',
-        'logLevel' => Logger::DEBUG,
-        'filename' => 'application.log'
-    ],
+    // TODO Change logger
+    // 'logger' => [
+    //     'path' => APP_PATH .'/var/logs/',
+    //     'format' => '%date% [%type%] %message%',
+    //     'date' => 'D j H:i:s',
+    //     'logLevel' => Logger::DEBUG,
+    //     'filename' => 'application.log'
+    // ],
     'useMail' => true
 ]);

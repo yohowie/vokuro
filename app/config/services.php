@@ -3,20 +3,21 @@ declare(strict_types=1);
 
 use Phalcon\Assets\Manager;
 use Phalcon\Crypt;
-use Phalcon\Escaper;
+use Phalcon\Di\FactoryDefault;
+use Phalcon\Encryption\Security;
 use Phalcon\Flash\Direct as Flash;
+use Phalcon\Html\Escaper;
 use Phalcon\Logger\Adapter\Stream as FileLogger;
 use Phalcon\Logger\Formatter\Line as FormatterLine;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
+use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
-use Phalcon\Security;
 use Phalcon\Session\Adapter\Stream as SessionAdapter;
 use Phalcon\Session\Bag;
 use Phalcon\Session\Manager as SessionManager;
-use Phalcon\Url as UrlResolver;
 use Vokuro\Plugins\Acl\Acl;
 use Vokuro\Plugins\Auth\Auth;
 use Vokuro\Plugins\Mail\Mail;
@@ -148,7 +149,8 @@ $di->set('dispatcher', function () {
 $di->setShared('assets', function() {
     $version = '1.0.0';
 
-    $assetManager = new Manager();
+    $container = new FactoryDefault();
+    $assetManager = $container->get('assets');
 
     $assetManager->collection('css')
         ->addCss('/bootstrap/css/bootstrap.min.css?dc='. $version, true, false, [
