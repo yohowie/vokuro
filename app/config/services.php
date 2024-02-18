@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-use Phalcon\Assets\Manager;
 use Phalcon\Crypt;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Encryption\Security;
 use Phalcon\Flash\Direct as Flash;
 use Phalcon\Html\Escaper;
 use Phalcon\Logger\Adapter\Stream as FileLogger;
-use Phalcon\Logger\Formatter\Line as FormatterLine;
+use Phalcon\Logger\Logger;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
+use Phalcon\Mvc\ViewBaseInterface;
 use Phalcon\Session\Adapter\Stream as SessionAdapter;
 use Phalcon\Session\Bag;
 use Phalcon\Session\Manager as SessionManager;
@@ -44,28 +44,24 @@ $di->setShared('url', function () {
 /**
  * Setting up the view component
  */
-$di->setShared('view', function () {
+$di->setShared('view', function() {
     $config = $this->getConfig();
 
     $view = new View();
-    $view->setDI($this);
-    $view->setViewsDir($config->application->viewsDir);
-
+    $view->setViewsDir($config->path('app.viewsDir'));
     $view->registerEngines([
-        '.volt' => function ($view) {
-            $config = $this->getConfig();
-
+        '.volt' => function (ViewBaseInterface $view) use($config) {
             $volt = new VoltEngine($view, $this);
-
             $volt->setOptions([
-                'path' => $config->application->cacheDir,
-                'separator' => '_'
+                'always'    => true,
+                'separator' => '_',
+                'path'      => $config->path('app.cacheDir'),
+                'prefix'    => '',
             ]);
 
             return $volt;
         },
         '.phtml' => PhpEngine::class
-
     ]);
 
     return $view;
@@ -144,6 +140,22 @@ $di->set('dispatcher', function () {
 });
 
 /**
+ * Logger dependency injection into the service
+ */
+$di->setShared('logger', function() {
+    $config = $this->getConfig();
+
+    $path = rtrim($config->path('logger.logsDir'), '\\/') . DIRECTORY_SEPARATOR;
+    $adapter = new FileLogger($path . $config->path('logger.filename'));
+    $logger = new Logger('messages', [
+        'main' => $adapter
+    ]);
+    $logger->setLogLevel($config->path('logger.logLevel'));
+
+    return $logger;
+});
+
+/**
  * 加载静态资源
  */
 $di->setShared('assets', function() {
@@ -203,18 +215,6 @@ $di->set('crypt', function() use($di) {
 
 $di->set('sessionBag', function() {
     return new Bag('conditions');
-});
-
-$di->set('logger', function() {
-    $loggerConfigs = $this->getConfig()->logger;
-    $filename = trim($loggerConfigs->filename, '\\/');
-    $path = rtrim($loggerConfigs->path, '\\/') . DIRECTORY_SEPARATOR;
-
-    $formatter = new FormatterLine($loggerConfigs->format, $loggerConfigs->date);
-    $logger = new FileLogger($path . $filename);
-    $logger->setFormatter($formatter);
-
-    return $logger;
 });
 
 $di->set('security', function() use($di) {

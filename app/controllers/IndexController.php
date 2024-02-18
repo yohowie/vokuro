@@ -13,6 +13,7 @@ class IndexController extends ControllerBase
      */
     public function indexAction(): void
     {
+        $this->logger->info('This is test log.');
         $this->view->setTemplateBefore('public');
     }
 
