@@ -73,16 +73,16 @@ $di->setShared('view', function() {
 $di->setShared('db', function () {
     $config = $this->getConfig();
 
-    $class = 'Phalcon\Db\Adapter\Pdo\\' . $config->database->adapter;
+    $class = 'Phalcon\Db\Adapter\Pdo\\' . $config->path('db.adapter');
     $params = [
-        'host'     => $config->database->host,
-        'username' => $config->database->username,
-        'password' => $config->database->password,
-        'dbname'   => $config->database->dbname,
-        'charset'  => $config->database->charset
+        'host'     => $config->path('db.host'),
+        'username' => $config->path('db.username'),
+        'password' => $config->path('db.password'),
+        'dbname'   => $config->path('db.dbname'),
+        'charset'  => $config->path('db.charset')
     ];
 
-    if ($config->database->adapter == 'Postgresql') {
+    if ($config->path('db.adapter') == 'Postgresql') {
         unset($params['charset']);
     }
 

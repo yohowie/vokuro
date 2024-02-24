@@ -16,7 +16,7 @@ return new Config([
         'viewsDir' => APP_PATH . '/views/',
         'cacheDir' => BASE_PATH .'/runtime/cache/'
     ],
-    'database' => [
+    'db' => [
         'adapter'     => $_ENV['DB_ADAPTER'] ?? 'Mysql',
         'host'        => $_ENV['DB_HOST'] ?? 'localhost',
         'username'    => $_ENV['DB_USERNAME'] ?? 'root',

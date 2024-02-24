@@ -12,7 +12,7 @@
 		"php": ">=8.0",
 		"ext-phalcon" : "^5.0.5",
 		"twbs/bootstrap": "^5.1",
-		"robmorgan/phinx": "^0.12.9",
+		"robmorgan/phinx": "^0.14.0",
 		"vlucas/phpdotenv": "^5.4",
 		"swiftmailer/swiftmailer": "^6.3"
 	},
