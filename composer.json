@@ -11,10 +11,12 @@
 	"require": {
 		"php": ">=8.0",
 		"ext-phalcon" : "^5.0.5",
-		"twbs/bootstrap": "^5.1",
+        "bower-asset/bootstrap": "^5.3",
+        "bower-asset/jquery": "^3.7",
+        "oomphinc/composer-installers-extender": "^2.0",
 		"robmorgan/phinx": "^0.14.0",
-		"vlucas/phpdotenv": "^5.4",
-		"swiftmailer/swiftmailer": "^6.3"
+        "swiftmailer/swiftmailer": "^6.3",
+		"vlucas/phpdotenv": "^5.4"
 	},
 	"require-dev": {
 		"phalcon/ide-stubs": "~5.0"
@@ -22,6 +24,24 @@
 	"autoload": {
 		"psr-4": {
 			"Vokuro\\": "app/"
+		}
+	},
+    "extra": {
+        "installer-types": ["bower-asset", "npm-asset"],
+        "installer-paths": {
+            "public/assets/{$name}/": ["type:bower-asset", "type:npm-asset"]
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
+	"config": {
+		"allow-plugins": {
+			"composer/installers": true,
+			"oomphinc/composer-installers-extender": true
 		}
 	}
 }

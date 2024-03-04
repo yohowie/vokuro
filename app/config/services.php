@@ -165,7 +165,7 @@ $di->setShared('assets', function() {
     $assetManager = $container->get('assets');
 
     $assetManager->collection('css')
-        ->addCss('/bootstrap/css/bootstrap.min.css?dc='. $version, true, false, [
+        ->addCss('assets/bootstrap/dist/css/bootstrap.min.css?dc='. $version, true, false, [
             'media' => 'screen,projection',
         ])
         ->addCss('/css/style.css?dc='. $version, true, true, [
@@ -173,8 +173,8 @@ $di->setShared('assets', function() {
         ]);
 
     $assetManager->collection('js')
-        ->addJs('/js/jquery-3.6.0.min.js?dc='. $version, true, true)
-        ->addJs('/bootstrap/js/bootstrap.min.js?dc='. $version, true, false);
+        ->addJs('assets/jquery/dist/jquery.min.js?dc='. $version, true, true)
+        ->addJs('assets/bootstrap/dist/js/bootstrap.min.js?dc='. $version, true, false);
 
     return $assetManager;
 });
