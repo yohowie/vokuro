@@ -28,7 +28,7 @@ set menus = ["首页": "index", "关于": "about"]
         {{ content() }}
     </div>
 </main>
-<footer class="footer py-3 mt-auto text-center">
+<footer class="footer py-3 mt-auto text-center bg-body-tertiary fw-light">
     <div class="container">
         <span class="text-muted">
             由 Phalcon 团队倾力打造

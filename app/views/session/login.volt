@@ -1,31 +1,25 @@
-<h1 class="mt-3">登录</h1>
+<div class="my-3">
+    {{ flash.output() }}
+    <form class="w-25 m-auto py-3" method="post">
+        {{ form.render('csrf', ['value': security.getToken()]) }}
+        <div class="form-floating">
+            {{ form.render('email', ['class': 'form-control border-primary-subtle', 'placeholder': 'name@example.com'])}}
+            <label for="email">Email Address</label>
+        </div>
+        <div class="form-floating mt-2">
+            {{ form.render('password', ['class': 'form-control border-primary-subtle', 'placeholder': 'Password']) }}
+            <label for="password">Password</label>
+        </div>
+        <div class="form-check text-start my-3">
+            {{ form.render('remember', ['class': 'form-check-input border-primary-subtle']) }}
+            {{ form.label('remember', ['class': 'form-check-label']) }}
+        </div>
+        {{ form.render('login', ['class': 'btn btn-primary w-100 py-2']) }}
 
-{{ flash.output() }}
-
-<form method="post" role="form">
-    <div class="mb-3">
-        <label for="email-input" class="form-label">电子邮箱</label>
-        {{ form.render("email", ["class": "form-control", "id": "email-input", "aria-describedby": "emailHelp"]) }}
-        <small id="emailHelp" class="form-text text-muted">我们绝不会与其他任何人共享您的电子邮件。</small>
-    </div>
-
-    <div class="mb-3">
-        <label for="password-input" class="form-label">密码</label>
-        {{ form.render("password", ["class": "form-control", "id": "password-input"]) }}
-    </div>
-
-    <div class="mb-3">
-        {{ form.render("remember", ["class": "form-check-input"]) }}
-        {{ form.label("remember", ["class": "form-check-label", "for": "login-remember"]) }}
-    </div>
-
-	<div class="mb-3">
-	    {{ form.render("csrf", ["value": security.getToken()]) }}
-	    {{ form.render("登录") }}
-    </div>
-</form>
-
-<hr>
-
-<p>{{ link_to("session/forgotPassword", "忘记密码") }}</p>
-<p>{{ link_to("session/signup", "注册") }}</p>
+        <hr>
+        <div class="d-flex">
+            <div class="flex-grow-1">{{ link_to('session/forgotPassword', '忘记密码') }}</div>
+            <div>{{ link_to('session/signup', '注册') }}</div>
+        </div>
+    </form>
+</div>

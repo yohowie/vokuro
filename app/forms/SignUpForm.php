@@ -109,7 +109,7 @@ class SignUpForm extends Form
         $this->add($csrf);
 
         // 提交按钮
-        $this->add(new Submit('注册', [
+        $this->add(new Submit('signUp', [
             'class' => 'btn btn-success'
         ]));
     }

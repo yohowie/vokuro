@@ -67,8 +67,6 @@ class LoginForm extends Form
         $this->add($csrf);
 
         // 提交按钮
-        $this->add(new Submit('登录', [
-            'class' => 'btn btn-primary'
-        ]));
+        $this->add(new Submit('login'));
     }
 }
