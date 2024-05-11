@@ -50,7 +50,6 @@ return new Config([
         'smtp' => [
             'server' => $_ENV['MAIL_SMTP_SERVER'],
             'port' => $_ENV['MAIL_SMTP_PORT'] ?? '587',
-            'security' => $_ENV['MAIL_SMTP_SECURITY'] ?? 'tls',
             'username' => $_ENV['MAIL_SMTP_USERNAME'],
             'password' => $_ENV['MAIL_SMTP_PASSWORD']
         ]

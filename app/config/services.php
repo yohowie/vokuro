@@ -200,7 +200,23 @@ $di->setShared('acl', function() {
  */
 $di->setShared('auth', Auth::class);
 
-$di->setShared('mail', Mail::class);
+/**
+ * Send mail
+ */
+$di->setShared('mail', function() {
+    $config = $this->getConfig();
+    $mail = new Mail();
+    $mail->registerMailer([
+        'fromName' => $config->path('mail.fromName'),
+        'fromEmail' => $config->path('mail.fromEmail'),
+        'server' => $config->path('mail.smtp.server'),
+        'port' => $config->path('mail.smtp.port'),
+        'username' => $config->path('mail.smtp.username'),
+        'password' => $config->path('mail.smtp.password'),
+    ]);
+
+    return $mail;
+});
 
 /**
  * 加密/解密

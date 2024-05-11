@@ -5,9 +5,9 @@
 {% set isTermsValidClass = form.messages("terms") ? "form-check-input is-invalid" : 'form-check-input border-primary-subtle' %}
 
 <div class="my-3">
-    <h2 class="mt-5">注册</h1>
-    {{ flash.output() }}
+    <h2 class="mt-5">注册</h2>
     <form class="w-50 m-auto" method="post">
+        {{ flash.output() }}
         {{ form.render('csrf', ['value': security.getToken()]) }}
         <div class="form-floating mt-2">
             {{ form.render('name', ['class': isNameValidClass, 'placeholder': '请输入用户名']) }}

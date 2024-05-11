@@ -15,8 +15,8 @@
         "bower-asset/jquery": "^3.7",
         "oomphinc/composer-installers-extender": "^2.0",
 		"robmorgan/phinx": "^0.14.0",
-        "swiftmailer/swiftmailer": "^6.3",
-		"vlucas/phpdotenv": "^5.4"
+		"vlucas/phpdotenv": "^5.4",
+		"phpmailer/phpmailer": "^6.9"
 	},
 	"require-dev": {
 		"phalcon/ide-stubs": "~5.0"
