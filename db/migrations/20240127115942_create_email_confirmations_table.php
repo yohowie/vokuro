@@ -23,11 +23,12 @@ final class CreateEmailConfirmationsTable extends AbstractMigration
             return ;
         }
 
-        $table->addColumn('users_id', 'integer')
+        $table->addColumn('users_id', 'integer', ['signed' => false])
             ->addColumn('code', 'char', ['limit' => 32])
             ->addColumn('created_at', 'integer')
             ->addColumn('modified_at', 'integer', ['null' => true])
             ->addColumn('confirmed', 'char', ['limit' => 1, 'default' => 'N'])
+            ->addForeignKey('users_id', 'users','id')
             ->create();
     }
 }

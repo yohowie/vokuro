@@ -208,7 +208,7 @@ class Auth extends Injectable
      */
     public function getIdentity()
     {
-        $identity = $this->session->get('auth-identity');
+        return $this->session->get('auth-identity');
     }
 
     public function getName()

@@ -147,7 +147,11 @@ class Acl extends Injectable
     protected function getFilePath()
     {
         if(!isset($this->filePath)) {
-            $this->filePath = rtrim($this->config->application->cacheDir, '\\/') .'/acl/data.txt';
+            $aclDir = rtrim($this->config->app->cacheDir, '\\/') . DIRECTORY_SEPARATOR .'acl';
+            if (!is_dir($aclDir)) {
+                mkdir($aclDir);
+            }
+            $this->filePath = $aclDir . DIRECTORY_SEPARATOR . 'data.txt';
         }
 
         return $this->filePath;

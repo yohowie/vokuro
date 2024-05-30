@@ -31,7 +31,7 @@ class EmailConfirmations extends Model
     /**
      * @var integer
      */
-    public $usersId;
+    public $users_id;
 
     /**
      * @var string
@@ -41,12 +41,12 @@ class EmailConfirmations extends Model
     /**
      * @var integer
      */
-    public $createdAt;
+    public $created_at;
 
     /**
      * @var integer
      */
-    public $modifiedAt;
+    public $modified_at;
 
     /**
      * @var string
@@ -55,7 +55,7 @@ class EmailConfirmations extends Model
 
     public function initialize()
     {
-        $this->belongsTo('usersId', Users::class, 'id', [
+        $this->belongsTo('users_id', Users::class, 'id', [
             'alias' => 'user',
         ]);
     }
@@ -66,7 +66,7 @@ class EmailConfirmations extends Model
     public function beforeValidationOnCreate()
     {
         // Timestamp the confirmation
-        $this->createdAt = time();
+        $this->created_at = time();
 
         // Generate a random confirmation code
         $this->code = preg_replace('/[^a-zA-Z0-9]/', '', base64_encode(openssl_random_pseudo_bytes(24)));
@@ -81,7 +81,7 @@ class EmailConfirmations extends Model
     public function beforeValidationOnUpdate()
     {
         // Timestamp the confirmation
-        $this->modifiedAt = time();
+        $this->modified_at = time();
     }
 
     /**

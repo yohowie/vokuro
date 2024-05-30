@@ -39,7 +39,7 @@ class UserControlController extends ControllerBase
         /**
          * Activate user
          */
-        $user = Users::findFirst($confirmation->user->id);
+        $user = Users::findFirst($confirmation->users_id);
         $user->active = 'Y';
         if (!$user->save()) {
             foreach ($confirmation->user->getMessages() as $message) {
@@ -70,7 +70,7 @@ class UserControlController extends ControllerBase
         /**
          * Identify the user in the application
          */
-        $this->auth->authUserById($confirmation->user->id);
+        $this->auth->authUserById($confirmation->users_id);
 
         /**
          * Check if the user must change his/her password

@@ -120,7 +120,7 @@ class Users extends Model
         // Only send the confirmation email if emails are turned on in the config
         if ($this->getDI()->get('config')->useMail && $this->active == 'N') {
             $emailConfirmation          = new EmailConfirmations();
-            $emailConfirmation->usersId = $this->id;
+            $emailConfirmation->users_id = $this->id;
 
             if ($emailConfirmation->save()) {
                 $this->getDI()
