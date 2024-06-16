@@ -174,7 +174,7 @@ $di->setShared('assets', function() {
 
     $assetManager->collection('js')
         ->addJs('assets/jquery/dist/jquery.min.js?dc='. $version, true, true)
-        ->addJs('assets/bootstrap/dist/js/bootstrap.min.js?dc='. $version, true, false);
+        ->addJs('assets/bootstrap/dist/js/bootstrap.bundle.min.js?dc='. $version, true, false);
 
     return $assetManager;
 });
@@ -230,7 +230,8 @@ $di->set('crypt', function() use($di) {
 });
 
 $di->set('sessionBag', function() {
-    return new Bag('conditions');
+    $session = new SessionManager();
+    return new Bag($session, 'conditions');
 });
 
 $di->set('security', function() use($di) {
