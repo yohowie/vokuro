@@ -1,6 +1,6 @@
-<div class="my-3">
+<div class="form-signin w-100 m-auto my-3">
     {{ flash.output() }}
-    <form class="w-25 m-auto py-3" method="post">
+    <form class="py-3" method="post">
         {{ form.render('csrf', ['value': security.getToken()]) }}
         <div class="form-floating">
             {{ form.render('email', ['class': 'form-control border-primary-subtle', 'placeholder': 'name@example.com'])}}

@@ -24,8 +24,27 @@ class UsersController extends ControllerBase
 
     public function indexAction(): void
     {
-        $this->view->setVar('form', new UsersForm());
-        $this->assets->collection('js')->addJs('/js/privateUsers.js', true, true);
+        $builder = Criteria::fromInput($this->getDI(), Users::class, $this->request->getQuery());
+        $count = Users::count($builder->getParams());
+        if ($count === 0) {
+            $this->flash->notice('没有找到任何用户');
+            $this->dispatcher->forward([
+                'action' => 'index'
+            ]);
+
+            return ;
+        }
+
+        $paginator = new Paginator([
+            'builder' => $builder->createBuilder(),
+            'limit' => 10,
+            'page' => $this->request->getQuery('page', 'int', 1),
+        ]);
+
+        $this->view->setVars([
+            'form' => new UsersForm(),
+            'page' => $paginator->paginate(),
+        ]);
     }
 
     /**

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4a5d10797d8ddc7457fb89eb98894bbb",
+    "content-hash": "49832ccd95181137e0380a5d04f62b57",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -20,6 +20,24 @@
                 "reference": "6e1f75f420f68e1d52733b8e407fc7c3766c9dba"
             },
             "type": "bower-asset"
+        },
+        {
+            "name": "bower-asset/bootstrap-table",
+            "version": "1.23.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wenzhixin/bootstrap-table.git",
+                "reference": "a22516e6ecc26ee3a3bcbfc765a331b811b7caa8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wenzhixin/bootstrap-table/zipball/a22516e6ecc26ee3a3bcbfc765a331b811b7caa8",
+                "reference": "a22516e6ecc26ee3a3bcbfc765a331b811b7caa8"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "bower-asset/jquery",
@@ -2036,8 +2054,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.0",
-        "ext-phalcon": "^5.0.5"
+        "php": ">=8.1",
+        "ext-phalcon": "^5.1.0"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"

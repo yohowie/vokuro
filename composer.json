@@ -9,15 +9,16 @@
 		"vokuro"
 	],
 	"require": {
-		"php": ">=8.0",
-		"ext-phalcon" : "^5.0.5",
-        "bower-asset/bootstrap": "^5.3",
-        "bower-asset/jquery": "^3.7",
-        "oomphinc/composer-installers-extender": "^2.0",
+		"php": ">=8.1",
+		"ext-phalcon" : "^5.1.0",
 		"robmorgan/phinx": "^0.14.0",
 		"vlucas/phpdotenv": "^5.4",
-		"phpmailer/phpmailer": "^6.9"
-	},
+		"phpmailer/phpmailer": "^6.9",
+        "oomphinc/composer-installers-extender": "^2.0",
+        "bower-asset/bootstrap": "^5.3",
+		"bower-asset/bootstrap-table": "^1.23",
+        "bower-asset/jquery": "^3.7"
+    },
 	"require-dev": {
 		"phalcon/ide-stubs": "~5.0"
 	},

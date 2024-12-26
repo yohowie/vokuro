@@ -1,26 +1,65 @@
-<h1 class="mt-3">搜索用户</h1>
-<div class="mb-5">
-    {{ link_to('users/create', '创建用户', 'class': 'btn btn-primary') }}
+<div class="my-3">
+    <h2 clss="mt-5">用户列表</h2>
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>用户名</th>
+                <th>邮箱</th>
+                <th>Profile</th>
+                <th>Banned?</th>
+                <th>Suspended?</th>
+                <th>Confirmed?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in page.items %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.profile.name }}</td>
+                <td>{{ user.banned == 'Y' ? 'Yes' : 'No' }}</td>
+                <td>{{ user.suspended == 'Y' ? 'Yes' : 'No' }}</td>
+                <td>{{ user.active == 'Y' ? 'Yes' : 'No' }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7">没有记录任何用户</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="7">
+                    <nav>
+                        <ul class="pagination justify-content-end mb-0">
+                            <li class="page-item {% if(page.current == page.first) %}disabled{% endif %}">
+                                {{ link_to('users/index?page=' ~ page.previous, '<span aria-hidden="true">&laquo;</span>', 'class': 'page-link', 'aria-label': 'Previous') }}
+                            </li>
+                            {% set text = '   hello   '|trim  %}
+                            <?php $startPage = max(1, $page->getCurrent() - 2) ?>
+                            <?php $endPage = min($page->getLast(), $page->getCurrent() + 2) ?>
+                            <?php if ($endPage - $startPage + 1 < 5): ?>
+                                <?php $endPage = min($page->getLast(), $startPage + 5 - 1) ?>
+                                <?php $startPage = max(1, $endPage - 5 + 1) ?>
+                            <?php endif ?>
+                            <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
+                            <li class="page-item">
+                            {% set active = '' %}
+                            {%- if i == page.current -%}
+                                {%- set active = 'active' -%}
+                            {%- endif -%}
+                            {{ link_to('users/index?page=' ~ i, i, 'class': 'page-link ' ~ active) }}
+                            </li>
+                            <?php endfor ?>
+                            <li class="page-item {% if(page.current == page.last) %}disabled{% endif %}">
+                                {{ link_to('users/index?page=' ~ page.next, '<span aria-hidden="true">&raquo;</span>', 'class': 'page-link', 'aria-label': 'Next') }}
+                            </li>
+                        </ul>
+                    </nav>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
 </div>
-<h6 id="usersAssetManagerDemoTextContainer">分离的 javascript 已加载</h6>
-
-{{ flash.output() }}
-<form class="form-inline" method="get" action="{{ url('users/search') }}">
-    <div class="form-group">
-        <label for="id" class="sr-only">Id</label>
-        {{ form.render('id', ['class': 'form-control mr-sm-2', 'placeholder': 'Id']) }}
-    </div>
-    <div class="form-group">
-        <label for="name" class="sr-only">用户名</label>
-        {{ form.render('name', ['class': 'form-control mr-sm-2', 'placeholder': '用户名']) }}
-    </div>
-    <div class="form-group">
-        <label for="email" class="sr-only">邮箱</label>
-        {{ form.render('email', ['class': 'form-control mr-sm-2']) }}
-    </div>
-    <div class="form-group">
-        {{ form.render('profilesId', ['class': 'form-control mr-sm-2']) }}
-    </div>
-
-    <button type="submit" class="btn btn-primary">搜索</button>
-</form>
